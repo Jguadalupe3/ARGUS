@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARGUS 5.0 - System Overview Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --gradient-primary: linear-gradient(135deg, #0284c7 0%, #0891b2 35%, #059669 70%, #16a34a 100%);
+            --gradient-secondary: linear-gradient(120deg, #0ea5e9 0%, #06b6d4 50%, #10b981 100%);
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: white;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .gradient-card {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .gradient-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .feature-card {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: #0891b2;
+            box-shadow: 0 0 30px rgba(8, 145, 178, 0.2);
+        }
+
+        .tab-button {
+            transition: all 0.3s ease;
+            border-radius: 0.75rem;
+        }
+
+        .tab-button.active {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(8, 145, 178, 0.3);
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, rgba(8, 145, 178, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+            border: 1px solid rgba(8, 145, 178, 0.2);
+        }
+
+        .code-block {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 0.5rem;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.875rem;
+        }
+
+        .section-tab {
+            display: none;
+        }
+
+        .section-tab.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(8, 145, 178, 0.3);
+        }
+
+        .architecture-node {
+            background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+            border: 2px solid #0891b2;
+            position: relative;
+        }
+
+        .architecture-node::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            background: var(--gradient-primary);
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #0891b2, #059669);
+            height: 8px;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="border-b border-gray-800 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-green-500 flex items-center justify-center">
+                        <i class="fas fa-cogs text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
+                            ARGUS 5.0
+                        </h1>
+                        <p class="text-gray-400 text-sm">Business Operations Management System</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-right">
+                        <div class="text-sm text-gray-400">Clear Cut Methods</div>
+                        <div class="text-xs text-green-400">System Status: Online</div>
+                    </div>
+                    <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        
+        <!-- Hero Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="metric-card p-6 rounded-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-white">9</div>
+                        <div class="text-sm text-gray-400">Core Modules</div>
+                    </div>
+                    <i class="fas fa-cubes text-2xl text-blue-400"></i>
+                </div>
+            </div>
+            
+            <div class="metric-card p-6 rounded-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-white">2,847</div>
+                        <div class="text-sm text-gray-400">Lines of Code</div>
+                    </div>
+                    <i class="fas fa-code text-2xl text-green-400"></i>
+                </div>
+            </div>
+            
+            <div class="metric-card p-6 rounded-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-white">5</div>
+                        <div class="text-sm text-gray-400">User Roles</div>
+                    </div>
+                    <i class="fas fa-users text-2xl text-purple-400"></i>
+                </div>
+            </div>
+            
+            <div class="metric-card p-6 rounded-xl">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-white">100%</div>
+                        <div class="text-sm text-gray-400">Security Coverage</div>
+                    </div>
+                    <i class="fas fa-shield-alt text-2xl text-red-400"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex flex-wrap gap-2 mb-8 bg-slate-800/50 p-2 rounded-xl">
+            <button onclick="showTab('overview')" class="tab-button active px-6 py-3 text-sm font-medium" id="overview-tab">
+                <i class="fas fa-home mr-2"></i>Overview
+            </button>
+            <button onclick="showTab('architecture')" class="tab-button px-6 py-3 text-sm font-medium" id="architecture-tab">
+                <i class="fas fa-sitemap mr-2"></i>Architecture
+            </button>
+            <button onclick="showTab('features')" class="tab-button px-6 py-3 text-sm font-medium" id="features-tab">
+                <i class="fas fa-star mr-2"></i>Features
+            </button>
+            <button onclick="showTab('security')" class="tab-button px-6 py-3 text-sm font-medium" id="security-tab">
+                <i class="fas fa-lock mr-2"></i>Security
+            </button>
+            <button onclick="showTab('deployment')" class="tab-button px-6 py-3 text-sm font-medium" id="deployment-tab">
+                <i class="fas fa-rocket mr-2"></i>Deployment
+            </button>
+            <button onclick="showTab('technical')" class="tab-button px-6 py-3 text-sm font-medium" id="technical-tab">
+                <i class="fas fa-cog mr-2"></i>Technical
+            </button>
+        </div>
+
+        <!-- Tab Content -->
+        
+        <!-- Overview Tab -->
+        <div id="overview" class="section-tab active">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- System Overview -->
+                <div class="gradient-card p-8 rounded-xl">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                        <i class="fas fa-chart-line text-blue-400"></i>
+                        System Overview
+                    </h2>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-lg font-semibold mb-3">Purpose</h3>
+                            <p class="text-gray-300 leading-relaxed">
+                                ARGUS 5.0 is a comprehensive business operations management system designed for Clear Cut Methods. 
+                                It provides secure, role-based access to CRM, project management, task tracking, and consultation management.
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold mb-3">Key Capabilities</h3>
+                            <ul class="space-y-2 text-gray-300">
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-400"></i>
+                                    Role-based access control with 5 user types
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-400"></i>
+                                    Complete consultation lifecycle management
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-400"></i>
+                                    360° client relationship tracking
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-400"></i>
+                                    Visual project management with Kanban
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <i class="fas fa-check text-green-400"></i>
+                                    Advanced task management with priorities
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technology Stack -->
+                <div class="gradient-card p-8 rounded-xl">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                        <i class="fas fa-layer-group text-green-400"></i>
+                        Technology Stack
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="bg-slate-800/50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-400 mb-2">Backend</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Google Apps Script</span>
+                                <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Google Sheets API</span>
+                                <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">Google Calendar</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-slate-800/50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-400 mb-2">Frontend</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-sm">Alpine.js</span>
+                                <span class="px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-sm">Tailwind CSS</span>
+                                <span class="px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-sm">DaisyUI</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-slate-800/50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-purple-400 mb-2">Architecture</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm">SPA</span>
+                                <span class="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm">RBAC</span>
+                                <span class="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm">Component-Based</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Structure -->
+            <div class="gradient-card p-8 rounded-xl mt-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <i class="fas fa-folder-tree text-yellow-400"></i>
+                    Complete File Structure
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4 text-blue-400">Backend (Google Apps Script)</h3>
+                        <div class="code-block p-4">
+                            <div class="text-green-400 mb-2">📄 Code.gs (2,847 lines)</div>
+                            <div class="ml-4 text-gray-300 space-y-1 text-sm">
+                                <div>├── Authentication System</div>
+                                <div>├── Role-Based Access Control</div>
+                                <div>├── Consultation Management</div>
+                                <div>├── CRM Operations</div>
+                                <div>├── Project Management</div>
+                                <div>├── Task Management</div>
+                                <div>└── Utility Functions</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4 text-green-400">Frontend (HTML/CSS/JS)</h3>
+                        <div class="code-block p-4">
+                            <div class="text-green-400 mb-2">📄 Main.html (Primary Interface)</div>
+                            <div class="text-green-400 mb-2">📄 dashboard_content.html</div>
+                            <div class="text-green-400 mb-2">📄 consultations_content.html</div>
+                            <div class="text-green-400 mb-2">📄 contacts_content.html</div>
+                            <div class="text-green-400 mb-2">📄 projects_content.html</div>
+                            <div class="text-green-400 mb-2">📄 tasks_content.html</div>
+                            <div class="text-gray-500 text-sm">+ 3 placeholder modules</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Architecture Tab -->
+        <div id="architecture" class="section-tab">
+            <div class="gradient-card p-8 rounded-xl mb-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <i class="fas fa-sitemap text-blue-400"></i>
+                    System Architecture
+                </h2>
+                
+                <!-- Architecture Diagram -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Frontend Layer -->
+                    <div class="architecture-node p-6 rounded-xl">
+                        <h3 class="text-lg font-bold mb-4 text-center text-blue-400">Frontend Layer</h3>
+                        <div class="space-y-3">
+                            <div class="bg-slate-700/50 p-3 rounded text-center">
+                                <i class="fas fa-desktop text-green-400 mb-2"></i>
+                                <div class="text-sm font-medium">SPA Interface</div>
+                                <div class="text-xs text-gray-400">Alpine.js + Tailwind</div>
+                            </div>
+                            <div class="bg-slate-700/50 p-3 rounded text-center">
+                                <i class="fas fa-palette text-purple-400 mb-2"></i>
+                                <div class="text-sm font-medium">UI Components</div>
+                                <div class="text-xs text-gray-400">DaisyUI + Custom CSS</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Business Logic Layer -->
+                    <div class="architecture-node p-6 rounded-xl">
+                        <h3 class="text-lg font-bold mb-4 text-center text-green-400">Business Logic</h3>
+                        <div class="space-y-3">
+                            <div class="bg-slate-700/50 p-3 rounded text-center">
+                                <i class="fas fa-shield-alt text-red-400 mb-2"></i>
+                                <div class="text-sm font-medium">RBAC Security</div>
+                                <div class="text-xs text-gray-400">Role-based Access</div>
+                            </div>
+                            <div class="bg-slate-700/50 p-3 rounded text-center">
+                                <i class="fas fa-cogs text-blue-400 mb-2"></i>
+                                <div class="text-sm font-medium">Core Functions</div>
+                                <div class="text-xs text-gray-400">CRUD Operations</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Layer -->
+                    <div class="architecture-node p-6 rounded-xl">
+                        <h3 class="text-lg font-bold mb-4 text-center text-yellow-400">Data Layer</h3>
+                        <div class="space-y-3">
+                            <div class="bg-slate-700/50 p-3 rounded text-center">
+                                <i class="fas fa-table text-green-400 mb-2"></i>
+                                <div class="text-sm font-medium">Google Sheets</div>
+                                <div class="text-xs text-gray-400">Primary Database</div>
+                            </div>
+                            <div class="bg-slate-700/50 p-3 rounded text-center">
+                                <i class="fas fa-calendar text-blue-400 mb-2"></i>
+                                <div class="text-sm font-medium">Google Calendar</div>
+                                <div class="text-xs text-gray-400">Scheduling</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Flow -->
+                <div class="bg-slate-800/50 p-6 rounded-xl">
+                    <h3 class="text-lg font-bold mb-4">Data Structure Overview</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-slate-700/50 p-4 rounded">
+                            <h4 class="font-semibold text-blue-400 mb-2">User Management</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Team_Members sheet</li>
+                                <li>• System_Access permissions</li>
+                                <li>• Client_Assignments mapping</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-slate-700/50 p-4 rounded">
+                            <h4 class="font-semibold text-green-400 mb-2">CRM Operations</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Projects_Master lifecycle</li>
+                                <li>• BusinessContacts info</li>
+                                <li>• Tasks management</li>
+                                <li>• InteractionLog history</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-slate-700/50 p-4 rounded">
+                            <h4 class="font-semibold text-yellow-400 mb-2">Booking System</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• PendingBookings requests</li>
+                                <li>• Calendar integration</li>
+                                <li>• Contact linking</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Tab -->
+        <div id="features" class="section-tab">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dashboard -->
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-tachometer-alt text-2xl text-blue-400"></i>
+                        <h3 class="text-xl font-bold">Dashboard</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• Real-time business metrics</li>
+                        <li>• Action item notifications</li>
+                        <li>• Recent activity feeds</li>
+                        <li>• System health monitoring</li>
+                        <li>• Quick stats and progress</li>
+                    </ul>
+                </div>
+
+                <!-- Consultation Management -->
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-calendar-check text-2xl text-green-400"></i>
+                        <h3 class="text-xl font-bold">Consultations</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• Booking request review</li>
+                        <li>• Calendar integration</li>
+                        <li>• Contact linking system</li>
+                        <li>• Team assignment</li>
+                        <li>• Status tracking</li>
+                    </ul>
+                </div>
+
+                <!-- CRM -->
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-users text-2xl text-purple-400"></i>
+                        <h3 class="text-xl font-bold">CRM</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• 360° client view</li>
+                        <li>• Project history tracking</li>
+                        <li>• Activity logging</li>
+                        <li>• Relationship management</li>
+                        <li>• Contact editing</li>
+                    </ul>
+                </div>
+
+                <!-- Project Management -->
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-project-diagram text-2xl text-yellow-400"></i>
+                        <h3 class="text-xl font-bold">Projects</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• Visual Kanban board</li>
+                        <li>• Drag-and-drop status</li>
+                        <li>• Payment progress tracking</li>
+                        <li>• Status workflow</li>
+                        <li>• Team lead assignment</li>
+                    </ul>
+                </div>
+
+                <!-- Task Management -->
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-tasks text-2xl text-red-400"></i>
+                        <h3 class="text-xl font-bold">Tasks</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• Priority-based organization</li>
+                        <li>• Overdue task highlighting</li>
+                        <li>• Undo functionality</li>
+                        <li>• Project integration</li>
+                        <li>• Advanced filtering</li>
+                    </ul>
+                </div>
+
+                <!-- Security -->
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="fas fa-shield-alt text-2xl text-green-500"></i>
+                        <h3 class="text-xl font-bold">Security</h3>
+                    </div>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• Role-based access control</li>
+                        <li>• Data layer permissions</li>
+                        <li>• Input validation</li>
+                        <li>• Secure operations</li>
+                        <li>• Audit trails</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Feature Implementation Status -->
+            <div class="gradient-card p-8 rounded-xl mt-8">
+                <h2 class="text-2xl font-bold mb-6">Implementation Status</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="font-medium">Core RBAC Security</span>
+                        <div class="flex items-center gap-3">
+                            <div class="w-32 bg-gray-700 rounded-full h-2">
+                                <div class="progress-bar w-full"></div>
+                            </div>
+                            <span class="text-green-400 font-bold">100%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="font-medium">Consultation Management</span>
+                        <div class="flex items-center gap-3">
+                            <div class="w-32 bg-gray-700 rounded-full h-2">
+                                <div class="progress-bar w-full"></div>
+                            </div>
+                            <span class="text-green-400 font-bold">100%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="font-medium">CRM & Projects</span>
+                        <div class="flex items-center gap-3">
+                            <div class="w-32 bg-gray-700 rounded-full h-2">
+                                <div class="progress-bar w-full"></div>
+                            </div>
+                            <span class="text-green-400 font-bold">100%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="font-medium">Task Management</span>
+                        <div class="flex items-center gap-3">
+                            <div class="w-32 bg-gray-700 rounded-full h-2">
+                                <div class="progress-bar w-full"></div>
+                            </div>
+                            <span class="text-green-400 font-bold">100%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="font-medium">Advanced Modules</span>
+                        <div class="flex items-center gap-3">
+                            <div class="w-32 bg-gray-700 rounded-full h-2">
+                                <div class="progress-bar w-1/4"></div>
+                            </div>
+                            <span class="text-yellow-400 font-bold">25%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Tab -->
+        <div id="security" class="section-tab">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- RBAC System -->
+                <div class="gradient-card p-8 rounded-xl">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                        <i class="fas fa-users-cog text-blue-400"></i>
+                        Role-Based Access Control
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="bg-red-500/10 border border-red-500/20 p-4 rounded-lg">
+                            <h4 class="font-semibold text-red-400 mb-2">Full Access Roles</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Co-Founder</li>
+                                <li>• Security Specialist</li>
+                            </ul>
+                            <p class="text-xs text-gray-400 mt-2">Complete system access and data management</p>
+                        </div>
+                        
+                        <div class="bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-lg">
+                            <h4 class="font-semibold text-yellow-400 mb-2">Project-Centric Roles</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• System Prompt Engineer</li>
+                                <li>• Business Process Consultant</li>
+                                <li>• Automation Architect</li>
+                            </ul>
+                            <p class="text-xs text-gray-400 mt-2">Access to projects they lead</p>
+                        </div>
+                        
+                        <div class="bg-green-500/10 border border-green-500/20 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-400 mb-2">Client-Centric Roles</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Client Success Coordinator</li>
+                            </ul>
+                            <p class="text-xs text-gray-400 mt-2">Access to assigned clients only</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Features -->
+                <div class="gradient-card p-8 rounded-xl">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                        <i class="fas fa-shield-alt text-green-400"></i>
+                        Security Features
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold">Authentication System</h4>
+                                <p class="text-sm text-gray-400">Google OAuth integration with team directory validation</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold">Data Layer Security</h4>
+                                <p class="text-sm text-gray-400">Role-based filtering at the database query level</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold">Input Validation</h4>
+                                <p class="text-sm text-gray-400">Comprehensive sanitization and type checking</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold">Concurrent Protection</h4>
+                                <p class="text-sm text-gray-400">Lock service prevents data corruption</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-green-400 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold">Audit Trails</h4>
+                                <p class="text-sm text-gray-400">Complete logging of user actions and changes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Implementation Details -->
+            <div class="gradient-card p-8 rounded-xl mt-8">
+                <h2 class="text-2xl font-bold mb-6">Security Implementation</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="code-block p-4">
+                        <h3 class="text-green-400 mb-3">Authentication Flow</h3>
+                        <pre class="text-sm text-gray-300"><code>1. User accesses system
+2. getUserData(email) validation
+3. canUserAccessSystem(userId) check
+4. Role-based data filtering
+5. Secure session establishment</code></pre>
+                    </div>
+                    
+                    <div class="code-block p-4">
+                        <h3 class="text-blue-400 mb-3">Data Access Pattern</h3>
+                        <pre class="text-sm text-gray-300"><code>getProjects() {
+  // Check user role
+  if (FULL_ACCESS_ROLES.includes(role)) {
+    return allProjects;
+  } else if (PROJECT_ROLES.includes(role)) {
+    return userProjects;
+  }
+  return [];
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deployment Tab -->
+        <div id="deployment" class="section-tab">
+            <div class="gradient-card p-8 rounded-xl mb-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <i class="fas fa-rocket text-blue-400"></i>
+                    Deployment Guide
+                </h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Setup Steps -->
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-green-400">Setup Steps</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <div class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">1</div>
+                                <div>
+                                    <h4 class="font-semibold">Create Google Sheets</h4>
+                                    <p class="text-sm text-gray-400">Set up User Management, CRM, and Booking spreadsheets</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3">
+                                <div class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">2</div>
+                                <div>
+                                    <h4 class="font-semibold">Configure Apps Script</h4>
+                                    <p class="text-sm text-gray-400">Update spreadsheet IDs in global constants</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3">
+                                <div class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">3</div>
+                                <div>
+                                    <h4 class="font-semibold">Deploy HTML Files</h4>
+                                    <p class="text-sm text-gray-400">Add all 9 HTML content files to the project</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-3">
+                                <div class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold">4</div>
+                                <div>
+                                    <h4 class="font-semibold">Test & Validate</h4>
+                                    <p class="text-sm text-gray-400">Run authentication and RBAC test functions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Configuration -->
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4 text-yellow-400">Configuration</h3>
+                        <div class="code-block p-4">
+                            <h4 class="text-green-400 mb-2">Required Constants</h4>
+                            <pre class="text-sm text-gray-300"><code>var BOOKING_SPREADSHEET_ID = 
+  'your-booking-sheet-id';
+var CRM_SPREADSHEET_ID = 
+  'your-crm-sheet-id';
+var USER_MANAGEMENT_SPREADSHEET_ID = 
+  'your-user-mgmt-sheet-id';</code></pre>
+                        </div>
+                        
+                        <div class="mt-4 bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-lg">
+                            <h4 class="font-semibold text-yellow-400 mb-2">Deployment Settings</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Execute as: User accessing the web app</li>
+                                <li>• Access: Anyone within organization</li>
+                                <li>• Version: Deploy as new version</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testing Functions -->
+            <div class="gradient-card p-8 rounded-xl">
+                <h2 class="text-2xl font-bold mb-6">Testing & Validation</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-blue-400 mb-2">testCorrectedAuth()</h4>
+                        <p class="text-sm text-gray-400">Test user authentication and data retrieval</p>
+                    </div>
+                    
+                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-green-400 mb-2">testCompleteRBAC()</h4>
+                        <p class="text-sm text-gray-400">Validate role-based access control system</p>
+                    </div>
+                    
+                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-purple-400 mb-2">testConsultationModule()</h4>
+                        <p class="text-sm text-gray-400">Test booking and consultation functions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Tab -->
+        <div id="technical" class="section-tab">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Code Statistics -->
+                <div class="gradient-card p-8 rounded-xl">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                        <i class="fas fa-chart-bar text-blue-400"></i>
+                        Code Statistics
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span>Total Lines of Code</span>
+                            <span class="font-bold text-blue-400">2,847</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Backend Functions</span>
+                            <span class="font-bold text-green-400">45+</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Frontend Components</span>
+                            <span class="font-bold text-purple-400">9</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Security Functions</span>
+                            <span class="font-bold text-red-400">12</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>API Integrations</span>
+                            <span class="font-bold text-yellow-400">5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Features -->
+                <div class="gradient-card p-8 rounded-xl">
+                    <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                        <i class="fas fa-tachometer-alt text-green-400"></i>
+                        Performance Features
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-memory text-blue-400 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold">Caching System</h4>
+                                <p class="text-sm text-gray-400">User data caching with 1-hour TTL</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-search text-green-400 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold">Debounced Search</h4>
+                                <p class="text-sm text-gray-400">300ms delay prevents excessive API calls</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-layer-group text-purple-400 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold">Lazy Loading</h4>
+                                <p class="text-sm text-gray-400">Tab content loads on demand</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-lock text-red-400 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold">Lock Service</h4>
+                                <p class="text-sm text-gray-400">Prevents concurrent operation conflicts</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Functions Overview -->
+            <div class="gradient-card p-8 rounded-xl mt-8">
+                <h2 class="text-2xl font-bold mb-6">Key Functions Overview</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-blue-400 mb-2">Authentication</h4>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• getUserData()</li>
+                            <li>• canUserAccessSystem()</li>
+                            <li>• doGet() security validation</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-green-400 mb-2">Data Access</h4>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• getProjects()</li>
+                            <li>• getBusinessContacts()</li>
+                            <li>• getTasks()</li>
+                            <li>• getClientAssignments()</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-purple-400 mb-2">Consultations</h4>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• getAllBookings()</li>
+                            <li>• approveBooking()</li>
+                            <li>• updateBookingDetails()</li>
+                            <li>• assignBookingToUser()</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-yellow-400 mb-2">CRM Operations</h4>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• addBusinessContact()</li>
+                            <li>• updateBusinessContact()</li>
+                            <li>• addInteraction()</li>
+                            <li>• getInteractionsForClient()</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-red-400 mb-2">Project Management</h4>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• createProject()</li>
+                            <li>• updateProjectDetails()</li>
+                            <li>• updateProjectStatus()</li>
+                            <li>• getProjectAnalytics()</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                        <h4 class="font-semibold text-pink-400 mb-2">Task Management</h4>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• addTask()</li>
+                            <li>• updateTask()</li>
+                            <li>• generateTaskId()</li>
+                            <li>• Task filtering & grouping</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="gradient-card p-8 rounded-xl mt-8">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <i class="fas fa-road text-purple-400"></i>
+                    Future Enhancements
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <i class="fas fa-server text-3xl text-blue-400 mb-3"></i>
+                        <h4 class="font-semibold mb-2">Systems Module</h4>
+                        <p class="text-sm text-gray-400">SaaS operations monitoring and client system health tracking</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <i class="fas fa-chart-line text-3xl text-green-400 mb-3"></i>
+                        <h4 class="font-semibold mb-2">Financial Module</h4>
+                        <p class="text-sm text-gray-400">Revenue tracking, invoicing, and financial analytics</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <i class="fas fa-heart text-3xl text-red-400 mb-3"></i>
+                        <h4 class="font-semibold mb-2">Success Module</h4>
+                        <p class="text-sm text-gray-400">Customer success metrics and satisfaction tracking</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 bg-slate-900/50 backdrop-blur-sm mt-16">
+        <div class="max-w-7xl mx-auto px-6 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="text-lg font-semibold bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
+                        ARGUS 5.0
+                    </div>
+                    <div class="text-sm text-gray-400">Business Operations Management System</div>
+                </div>
+                <div class="flex items-center gap-6 text-sm text-gray-400">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-code"></i>
+                        <span>Google Apps Script</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>RBAC Security</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-cloud"></i>
+                        <span>Cloud Native</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.section-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        // Initialize with overview tab
+        document.addEventListener('DOMContentLoaded', function() {
+            showTab('overview');
+        });
+
+        // Add smooth scrolling for better UX
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add loading animation for tabs
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function() {
+                // Add a subtle loading effect
+                this.style.opacity = '0.7';
+                setTimeout(() => {
+                    this.style.opacity = '1';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>
